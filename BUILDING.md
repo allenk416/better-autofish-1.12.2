@@ -22,15 +22,15 @@ The script extracts Forge's mapping table, maps the runtime/API to SRG names, co
 
 Outputs in ignored `dist/`:
 
-- `Better-AutoFish-1.12.2-1.0.6.jar`
-- `Better-AutoFish-1.12.2-1.0.6-source.zip`
-- `SHA256SUMS-1.0.6.txt`
+- `Better-AutoFish-1.12.2-1.0.7.jar`
+- `Better-AutoFish-1.12.2-1.0.7-source.zip`
+- `SHA256SUMS-1.0.7.txt`
 
 The source ZIP includes the mod source, resources, build tooling, tests, documentation and license. Release tags should point at the same source snapshot used to build their JAR.
 
 ## Versions
 
-Increase the final component of `VERSION` and the version in `src/main/resources/mcmod.info` together for each new build: `1.0.6`, `1.0.7`, and so on. The packager rejects an existing filename. Update the download filename in both READMEs when preparing a release.
+Increase the final component of `VERSION` and the version in `src/main/resources/mcmod.info` together for each new build: `1.0.7`, `1.0.8`, and so on. The packager rejects an existing filename. Update the download filename in both READMEs when preparing a release.
 
 This repository uses the PowerShell build above. All current mod source is kept in one place; it has no Gradle build that silently compiles a separate, older implementation.
 

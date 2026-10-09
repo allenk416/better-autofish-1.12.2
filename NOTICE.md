@@ -4,7 +4,7 @@ Better AutoFish 1.12.2 is a modified version of **AutoFish for Forge 1.12.2**, o
 
 - Upstream project: https://github.com/North-West-Wind/AutoFish
 - Source baseline: the `1.12.2` branch at commit [`a6a57e150b484353d913a46219b28351215e4183`](https://github.com/North-West-Wind/AutoFish/commit/a6a57e150b484353d913a46219b28351215e4183)
-- Modifications maintained by **allenk416**, dated **2026-10-09**: automatic casting and reconnect recovery, hook-state recovery, consecutive-bite handling, GUI/background fishing, configurable timing and detection, durability protection, bilingual settings and source build tooling.
+- Modifications maintained by **allenk416**, dated **2026-10-09**: automatic casting and reconnect recovery, hook-state recovery, consecutive-bite handling, GUI/background fishing, configurable timing and detection, durability protection, bilingual settings source build tooling, and the addition of the BETTER label to the upstream logo.
 
 Original code and resources remain attributable to their respective copyright holders. The existing `forgeautofish` mod ID and package namespace are retained for compatibility. Install this derivative in place of the original AutoFish, rather than alongside it.
 
@@ -16,7 +16,7 @@ Development used **ChatGPT** to assist with code analysis, implementation and do
 
 Better AutoFish 1.12.2 是 **NorthWestWind** 编写的 **AutoFish for Forge 1.12.2** 的衍生修改，源码基线见上方链接。
 
-本项目由 **allenk416** 维护，修改日期为 **2026-10-09**。改动包括自动起竿与重连恢复、鱼钩状态恢复、连续快速咬钩处理、界面和后台钓鱼、可配置时序与检测、耐久保护、中英文设置界面及源码构建工具。
+本项目由 **allenk416** 维护，修改日期为 **2026-10-09**。改动包括自动起竿与重连恢复、鱼钩状态恢复、连续快速咬钩处理、界面和后台钓鱼、可配置时序与检测、耐久保护、中英文设置界面、源码构建工具，以及在上游图标中加入 BETTER 标识。
 
 原代码与资源保留各自权利人的来源署名。保留 `forgeautofish` 模组 ID 和包名以保持兼容；本模组应替换原 AutoFish 安装。
 

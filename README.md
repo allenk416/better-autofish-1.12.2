@@ -23,7 +23,7 @@ A client-side automatic fishing mod for Minecraft 1.12.2, with features designed
 
 1. Download the mod `.jar` from [Releases](https://github.com/allenk416/better-autofish-1.12.2/releases).
 2. Close Minecraft and remove the previous AutoFish JAR from the active `mods` folder.
-3. Put `Better-AutoFish-1.12.2-1.0.6.jar` in that folder, then start the game.
+3. Put `Better-AutoFish-1.12.2-1.0.7.jar` in that folder, then start the game.
 4. Press **F7** to enable or disable fishing. Press **F10** to open settings. Both bindings can be changed in **Options → Controls**.
 5. Adjust the values as needed for the server you play on, then select **Save & apply**. You can leave the settings screen open while fishing.
 

@@ -23,7 +23,7 @@
 
 1. 从 [Releases](https://github.com/allenk416/better-autofish-1.12.2/releases) 下载模组 `.jar`。
 2. 退出 Minecraft，把旧 AutoFish JAR 移出当前实例的 `mods` 文件夹。
-3. 将 `Better-AutoFish-1.12.2-1.0.6.jar` 放入该文件夹，再启动游戏。
+3. 将 `Better-AutoFish-1.12.2-1.0.7.jar` 放入该文件夹，再启动游戏。
 4. 按 **F7** 开关自动钓鱼，按 **F10** 打开设置。按键可在**选项 → 控制**中修改。
 5. 根据实际游玩的服务器调整参数，再点击**保存并生效**。可以保持设置界面打开继续挂机。
 
