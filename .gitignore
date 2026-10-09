@@ -1,0 +1,25 @@
+# Build output and local dependencies
+/build/
+/dist/
+*.class
+*.log
+__pycache__/
+*.py[cod]
+
+# IDE and machine settings
+.idea/
+.vscode/
+*.iml
+local.properties
+.env
+
+# Game instances and player data
+.minecraft/
+run/
+saves/
+logs/
+options.txt
+servers.dat
+launcher_profiles.json
+*.auth
+*.token

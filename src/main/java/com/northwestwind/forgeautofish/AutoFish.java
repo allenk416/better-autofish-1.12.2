@@ -1,0 +1,41 @@
+// Derived from AutoFish for Forge 1.12.2 by NorthWestWind.
+// Modified by allenk416, 2026-10-09: client-only metadata and project name.
+// Licensed under GPL-3.0; see LICENSE and NOTICE.md.
+package com.northwestwind.forgeautofish;
+
+import com.northwestwind.forgeautofish.handler.AutoFishHandler;
+import com.northwestwind.forgeautofish.keybind.KeyBinds;
+import com.northwestwind.forgeautofish.proxy.CommonProxy;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+@Mod(modid = AutoFish.MODID, name = AutoFish.NAME, useMetadata = true,
+        clientSideOnly = true, acceptedMinecraftVersions = "[1.12.2]")
+public class AutoFish
+{
+    public static final String MODID = "forgeautofish";
+    public static final String NAME = "Better AutoFish 1.12.2";
+    public static final String CLIENT_PROXY = "com.northwestwind.forgeautofish.proxy.ClientProxy";
+    public static final String COMMON_PROXY = "com.northwestwind.forgeautofish.proxy.CommonProxy";
+
+    @Mod.Instance
+    public static AutoFish instance;
+
+    @SidedProxy(clientSide = AutoFish.CLIENT_PROXY, serverSide = AutoFish.COMMON_PROXY)
+    public static CommonProxy proxy;
+
+    @Mod.EventHandler
+    public static void preInit(FMLPreInitializationEvent event) { MinecraftForge.EVENT_BUS.register(new AutoFishHandler()); }
+
+    @Mod.EventHandler
+    public static void init(final FMLInitializationEvent event) {
+        KeyBinds.register();
+    }
+
+    @Mod.EventHandler
+    public static void postInit(FMLPostInitializationEvent event) {}
+}

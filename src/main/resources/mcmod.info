@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "forgeautofish",
+    "name": "Better AutoFish 1.12.2",
+    "description": "Client-side automatic fishing for multiplayer server use, with automatic casting, reconnect recovery, GUI/background fishing and configurable detection. Includes English and Simplified Chinese settings. Based on AutoFish by NorthWestWind.",
+    "version": "1.0.6",
+    "mcversion": "1.12.2",
+    "url": "https://github.com/allenk416/better-autofish-1.12.2",
+    "authorList": [
+      "NorthWestWind",
+      "allenk416"
+    ],
+    "credits": "Original AutoFish by NorthWestWind; derivative maintained by allenk416. GPL-3.0; see LICENSE and NOTICE.md.",
+    "logoFile": "forgeautofish.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
