@@ -6,7 +6,7 @@ parser.add_argument('--output',type=Path,default=Path(__file__).resolve().parent
 root=parser.parse_args().output
 files={
 'net/minecraft/entity/Entity.java': '''package net.minecraft.entity;
-public class Entity { public boolean field_70128_L; public net.minecraft.world.World field_70170_p;
+public class Entity { public boolean field_70128_L,field_70122_E; public float field_70125_A,field_70127_C,field_70177_z,field_70126_B; public net.minecraft.world.World field_70170_p;
 public double field_70159_w,field_70179_y,field_70181_x,field_70165_t,field_70163_u,field_70161_v; public int id; public int func_145782_y(){return id;} }''',
 'net/minecraft/entity/player/EntityPlayer.java': '''package net.minecraft.entity.player;
 public class EntityPlayer extends net.minecraft.entity.Entity {
@@ -17,7 +17,14 @@ public net.minecraft.item.ItemStack func_184586_b(net.minecraft.util.EnumHand ha
 public boolean func_70089_S(){return !field_70128_L;} public boolean func_175149_v(){return false;}
 public String lastMessage;
 public void func_146105_b(net.minecraft.util.text.ITextComponent text,boolean actionbar){lastMessage=text.func_150254_d();} }''',
-'net/minecraft/client/entity/EntityPlayerSP.java': 'package net.minecraft.client.entity; public class EntityPlayerSP extends net.minecraft.entity.player.EntityPlayer {}',
+'net/minecraft/client/entity/EntityPlayerSP.java': 'package net.minecraft.client.entity; public class EntityPlayerSP extends net.minecraft.entity.player.EntityPlayer {public net.minecraft.client.network.NetHandlerPlayClient field_71174_a=new net.minecraft.client.network.NetHandlerPlayClient();}',
+'net/minecraft/network/Packet.java': 'package net.minecraft.network;public interface Packet<T> {}',
+'net/minecraft/network/play/client/CPacketPlayer.java': '''package net.minecraft.network.play.client;
+public class CPacketPlayer implements net.minecraft.network.Packet<Object> {public float yaw,pitch; public boolean ground;
+public static class Rotation extends CPacketPlayer {public Rotation(float yaw,float pitch,boolean ground){this.yaw=yaw;this.pitch=pitch;this.ground=ground;}} }''',
+'net/minecraft/client/network/NetHandlerPlayClient.java': '''package net.minecraft.client.network;
+public class NetHandlerPlayClient {public java.util.List<net.minecraft.network.Packet<?>> packets=new java.util.ArrayList<>();
+public void func_147297_a(net.minecraft.network.Packet<?> p){packets.add(p);} }''',
 'net/minecraft/entity/projectile/EntityFishHook.java': '''package net.minecraft.entity.projectile;
 public class EntityFishHook extends net.minecraft.entity.Entity {
 public net.minecraft.entity.player.EntityPlayer owner; public boolean wet=true;
@@ -27,8 +34,8 @@ public class World { public java.util.List<net.minecraft.entity.Entity> field_72
 public net.minecraft.entity.Entity func_73045_a(int id){for(net.minecraft.entity.Entity e:field_72996_f)if(e.id==id)return e;return null;} }''',
 'net/minecraft/client/multiplayer/WorldClient.java': 'package net.minecraft.client.multiplayer; public class WorldClient extends net.minecraft.world.World {}',
 'net/minecraft/client/multiplayer/PlayerControllerMP.java': '''package net.minecraft.client.multiplayer;
-public class PlayerControllerMP { public int calls; public net.minecraft.util.EnumHand lastHand;
-public net.minecraft.util.EnumActionResult func_187101_a(net.minecraft.entity.player.EntityPlayer p,net.minecraft.world.World w,net.minecraft.util.EnumHand hand){calls++;lastHand=hand;return net.minecraft.util.EnumActionResult.SUCCESS;} }''',
+public class PlayerControllerMP { public int calls,packetsAtUse; public float pitchAtUse,yawAtUse; public net.minecraft.util.EnumHand lastHand;
+public net.minecraft.util.EnumActionResult func_187101_a(net.minecraft.entity.player.EntityPlayer p,net.minecraft.world.World w,net.minecraft.util.EnumHand hand){calls++;lastHand=hand;pitchAtUse=p.field_70125_A;yawAtUse=p.field_70177_z;packetsAtUse=((net.minecraft.client.entity.EntityPlayerSP)p).field_71174_a.packets.size();return net.minecraft.util.EnumActionResult.SUCCESS;} }''',
 'net/minecraft/client/gui/GuiScreen.java': '''package net.minecraft.client.gui;
 public class GuiScreen { protected net.minecraft.client.Minecraft field_146297_k=net.minecraft.client.Minecraft.instance;
 public int field_146294_l=320,field_146295_m=240; public java.util.List<GuiButton> field_146292_n=new java.util.ArrayList<>();

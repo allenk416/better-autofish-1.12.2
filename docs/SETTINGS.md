@@ -19,6 +19,22 @@ A detected bite is reeled immediately on the next client tick; the recast and st
 
 Adjust timing for the server you play on. A short no-bite timeout can reel before a fish arrives. Short recast delays can cause ignored casts on laggy servers or servers that limit item-use frequency.
 
+## Casting angles
+
+Select **Angles >** in F10. **< Timings** returns to the timing page; switching pages or resizing preserves unsaved entries. **Save & apply** saves both pages together. This feature changes the player's view before automatic casts; it does not change a server's saved teleport point.
+
+| Setting | Default | Range or behavior |
+|---|---:|---|
+| Fixed pitch | Off | Applies the saved up/down angle before an automatic cast. |
+| Pitch | 60 degrees | -90 to 90; 0 is level, positive looks down, negative looks up. Try 45–60 for a shorter cast, then adjust for your position and water level. |
+| Fixed heading | Off | Applies the saved horizontal direction before an automatic cast. Leave off to preserve the current heading. |
+| Heading | 0 degrees | -180 to 180; the captured value is normalized to this range. |
+| Use current view | Button | Fills both angles from the player's current view and enables both switches. Save to apply. |
+
+For a convenient setup, disable fishing with F7 before aiming manually. Open F10, select **Angles >**, read the current view and save; then return to the game and enable fishing. You can later edit either numeric field and save without restarting. To shorten a cast while keeping your current horizontal direction, enable only **Fixed pitch**.
+
+The view is adjusted only before an automatic cast, including the first cast after reconnecting. Waiting for a bite and reeling do not lock the camera. The mod sends a normal rotation packet before using the rod so the server launches the hook in the configured direction. Open GUIs remain open and the operating-system mouse is not moved. **Reset values** turns both angle switches off and fills in their defaults; save to apply.
+
 ## Detection and protection
 
 | Setting | Default | Range or behavior |

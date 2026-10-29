@@ -28,7 +28,7 @@ for file in (root / 'src/main/java').rglob('*.java'):
 for key in used:
     if key not in english:
         raise RuntimeError('Missing translation for source key: ' + key)
-for name in ('recastDelayMs','castRetryMs','startupDelayMs','hookTimeoutMs','dryHookTimeoutMs','ghostTimeoutMs','motionThreshold','soundRadius'):
+for name in ('recastDelayMs','castRetryMs','startupDelayMs','hookTimeoutMs','dryHookTimeoutMs','ghostTimeoutMs','motionThreshold','soundRadius','castPitch','castYaw'):
     if 'gui.forgeautofish.' + name not in english:
         raise RuntimeError('Missing field label: ' + name)
 print('PASS: ' + str(len(english)) + ' bilingual keys, source coverage and matching format arguments')

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -31,6 +32,8 @@ public class AutoFishHandler {
     private boolean enabled;
     private boolean protectRod=true;
     private boolean soundDetection=true;
+    private boolean fixCastPitch, fixCastYaw;
+    private float castPitch=60, castYaw;
     private long recastDelay=500;
     private long ghostTimeout=3000;
     private double motionThreshold=0.05, soundRadius=1.0;
@@ -67,6 +70,12 @@ public class AutoFishHandler {
     private void readSettings() {
         protectRod=Boolean.parseBoolean(config.getProperty("protectRod","true"));
         soundDetection=Boolean.parseBoolean(config.getProperty("soundDetection","true"));
+        fixCastPitch=Boolean.parseBoolean(config.getProperty("fixCastPitch","false"));
+        fixCastYaw=Boolean.parseBoolean(config.getProperty("fixCastYaw","false"));
+        config.setProperty("fixCastPitch",Boolean.toString(fixCastPitch));
+        config.setProperty("fixCastYaw",Boolean.toString(fixCastYaw));
+        castPitch=(float)decimal("castPitch",60,-90,90);
+        castYaw=(float)decimal("castYaw",0,-180,180);
         recastDelay=number("recastDelayMs",500,100,10000);
         ghostTimeout=number("ghostTimeoutMs",3000,1000,10000);
         motionThreshold=decimal("motionThreshold",0.05,0.01,1.0);
@@ -218,6 +227,14 @@ public class AutoFishHandler {
         FishingPolicy.Action action=policy.tick(now,true,
                 hook==null?Long.MIN_VALUE:hook.func_145782_y(),bite,inWater);
         if(action==FishingPolicy.Action.NONE) return;
+        // Rotation must reach the server before use-item: fishing hooks are launched server-side.
+        // Only adjust a real cast, leaving waiting, reeling, GUIs and the OS mouse alone.
+        if(action==FishingPolicy.Action.CAST && (fixCastPitch || fixCastYaw)) {
+            if(fixCastPitch) player.field_70125_A=player.field_70127_C=castPitch;
+            if(fixCastYaw) player.field_70177_z=player.field_70126_B=castYaw;
+            mc.field_71439_g.field_71174_a.func_147297_a(new CPacketPlayer.Rotation(
+                    player.field_70177_z,player.field_70125_A,player.field_70122_E));
+        }
         // Normal controller path synchronizes the selected slot, sends the packet and runs
         // local item logic; it also respects Forge's normal use-item hooks.
         EnumActionResult result=mc.field_71442_b.func_187101_a(player,world,hand);

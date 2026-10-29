@@ -12,6 +12,7 @@ A client-side automatic fishing mod for Minecraft 1.12.2, with features designed
 - Continues fishing with chat, inventory, containers or menus open, and while Minecraft is in the background.
 - Recovers from stuck hooks and stops before a fishing rod reaches its last two durability points.
 - Provides in-game timing and detection settings in English and Simplified Chinese.
+- Optionally restores a configurable pitch and heading before casting, including after a teleport or reconnect.
 
 ## Requirements
 
@@ -23,13 +24,15 @@ A client-side automatic fishing mod for Minecraft 1.12.2, with features designed
 
 1. Download the mod `.jar` from [Releases](https://github.com/allenk416/better-autofish-1.12.2/releases).
 2. Close Minecraft and remove the previous AutoFish JAR from the active `mods` folder.
-3. Put `Better-AutoFish-1.12.2-1.0.7.jar` in that folder, then start the game.
+3. Put `Better-AutoFish-1.12.2-1.0.9.jar` in that folder, then start the game.
 4. Press **F7** to enable or disable fishing. Press **F10** to open settings. Both bindings can be changed in **Options → Controls**.
 5. Adjust the values as needed for the server you play on, then select **Save & apply**. You can leave the settings screen open while fishing.
 
 The mod follows Minecraft's language setting: **English (US)** or **简体中文**. Both languages are included in the same JAR; other languages fall back to English.
 
 Configuration is saved in `config/autofish-recovery.properties` inside the active Minecraft instance. The existing filename is retained so previous settings can be reused.
+
+To cast closer, turn fishing off with F7, aim at the desired water, then open **F10 → Angles > → Use current view → Save & apply**. Return to the game and enable fishing again. You can also enter the angles directly: positive pitch looks down. Pitch and heading have separate switches, both off by default. Reading the current view fills both values and enables both switches; saving applies them. See the [casting angle guide](docs/SETTINGS.md#casting-angles) for details.
 
 After a server restart, fishing resumes once the client has reconnected and the player is holding a rod again. Automatic reconnection and login are supplied by the client or another mod. Background fishing requires the game world to keep running; a paused single-player world will not progress.
 

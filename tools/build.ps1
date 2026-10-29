@@ -56,7 +56,7 @@ try {
     $testSources = @(Get-ChildItem -LiteralPath 'tests' -Filter '*.java' | Select-Object -ExpandProperty FullName)
     & $javac -encoding UTF-8 --release 8 -cp "$fixtures;$classes" -d $testClasses $testSources
     if($LASTEXITCODE) { throw 'Could not compile tests.' }
-    foreach($test in @('FishingPolicyTest','HandlerIntegrationTest','LocalizationIntegrationTest')) {
+    foreach($test in @('FishingPolicyTest','HandlerIntegrationTest','LocalizationIntegrationTest','CastingAngleIntegrationTest')) {
         & $java -cp "$fixtures;$classes;$testClasses;src\main\resources" $test
         if($LASTEXITCODE) { throw "$test failed." }
     }

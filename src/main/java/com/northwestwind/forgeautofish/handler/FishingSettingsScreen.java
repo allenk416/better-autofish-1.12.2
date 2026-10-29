@@ -15,35 +15,52 @@ public class FishingSettingsScreen extends GuiScreen {
     private final GuiScreen parent;
     private Properties values;
     private GuiTextField[] fields;
-    private boolean enabled,protectRod,soundDetection;
+    private boolean enabled,protectRod,soundDetection,fixCastPitch,fixCastYaw;
+    private int page;
     private String statusKey="gui.forgeautofish.status.ready";
     private Object[] statusArgs=new Object[0];
     private final String[] keys={"recastDelayMs","castRetryMs","startupDelayMs","hookTimeoutMs",
-            "dryHookTimeoutMs","ghostTimeoutMs","motionThreshold","soundRadius"};
-    private final String[] defaults={"500","5000","5000","10000","20000","3000","0.05","1.0"};
-    private final double[] min={100,2000,1000,6000,10000,1000,0.01,0.1};
-    private final double[] max={10000,60000,60000,600000,60000,10000,1.0,5.0};
+            "dryHookTimeoutMs","ghostTimeoutMs","motionThreshold","soundRadius","castPitch","castYaw"};
+    private final String[] defaults={"500","5000","5000","10000","20000","3000","0.05","1.0","60","0"};
+    private final double[] min={100,2000,1000,6000,10000,1000,0.01,0.1,-90,-180};
+    private final double[] max={10000,60000,60000,600000,60000,10000,1.0,5.0,90,180};
 
     public FishingSettingsScreen(AutoFishHandler owner,GuiScreen parent) {
         this.owner=owner; this.parent=parent; values=owner.settingsSnapshot();
         enabled=Boolean.parseBoolean(values.getProperty("enabled","false"));
         protectRod=Boolean.parseBoolean(values.getProperty("protectRod","true"));
         soundDetection=Boolean.parseBoolean(values.getProperty("soundDetection","true"));
+        fixCastPitch=Boolean.parseBoolean(values.getProperty("fixCastPitch","false"));
+        fixCastYaw=Boolean.parseBoolean(values.getProperty("fixCastYaw","false"));
+    }
+
+    private int fieldOffset() { return page==0?0:8; }
+    private void rememberFields() {
+        if(fields!=null) for(int i=0;i<fields.length;i++)
+            values.setProperty(keys[fieldOffset()+i],fields[i].func_146179_b());
     }
 
     @Override public void func_73866_w_() {
         // Preserve typed-but-unsaved values when the window is resized.
-        if(fields!=null) for(int i=0;i<fields.length;i++) values.setProperty(keys[i],fields[i].func_146179_b());
-        fields=new GuiTextField[keys.length];
+        rememberFields();
+        fields=new GuiTextField[page==0?8:2];
         for(int i=0;i<fields.length;i++) {
             int x=field_146294_l/2-145+(i%2)*150,y=42+(i/2)*31;
             fields[i]=new GuiTextField(i,field_146289_q,x,y+10,135,16);
-            fields[i].func_146203_f(12); fields[i].func_146180_a(values.getProperty(keys[i],defaults[i]));
+            int index=fieldOffset()+i;
+            fields[i].func_146203_f(12); fields[i].func_146180_a(values.getProperty(keys[index],defaults[index]));
         }
         field_146292_n.clear();
-        field_146292_n.add(new GuiButton(10,field_146294_l/2-145,172,95,20,""));
-        field_146292_n.add(new GuiButton(11,field_146294_l/2-45,172,95,20,""));
-        field_146292_n.add(new GuiButton(12,field_146294_l/2+55,172,95,20,""));
+        field_146292_n.add(new GuiButton(10,field_146294_l/2-145,172,70,20,""));
+        field_146292_n.add(new GuiButton(11,field_146294_l/2-70,172,70,20,""));
+        field_146292_n.add(new GuiButton(12,field_146294_l/2+5,172,70,20,""));
+        field_146292_n.add(new GuiButton(3,field_146294_l/2+80,172,70,20,
+                tr(page==0?"gui.forgeautofish.anglesPage":"gui.forgeautofish.timingsPage")));
+        if(page==1) {
+            field_146292_n.add(new GuiButton(13,field_146294_l/2-145,88,145,20,""));
+            field_146292_n.add(new GuiButton(14,field_146294_l/2+5,88,145,20,""));
+            field_146292_n.add(new GuiButton(15,field_146294_l/2-145,120,295,20,tr("gui.forgeautofish.captureView")));
+        }
         field_146292_n.add(new GuiButton(0,field_146294_l/2-145,field_146295_m-26,95,20,tr("gui.forgeautofish.save")));
         field_146292_n.add(new GuiButton(2,field_146294_l/2-45,field_146295_m-26,95,20,tr("gui.forgeautofish.reset")));
         field_146292_n.add(new GuiButton(1,field_146294_l/2+55,field_146295_m-26,95,20,tr("gui.forgeautofish.back")));
@@ -55,6 +72,8 @@ public class FishingSettingsScreen extends GuiScreen {
             if(b.field_146127_k==10) b.field_146126_j=tr("gui.forgeautofish.fishing",state(enabled));
             if(b.field_146127_k==11) b.field_146126_j=tr("gui.forgeautofish.rodGuard",state(protectRod));
             if(b.field_146127_k==12) b.field_146126_j=tr("gui.forgeautofish.sound",state(soundDetection));
+            if(b.field_146127_k==13) b.field_146126_j=tr("gui.forgeautofish.fixPitch",state(fixCastPitch));
+            if(b.field_146127_k==14) b.field_146126_j=tr("gui.forgeautofish.fixYaw",state(fixCastYaw));
         }
     }
 
@@ -65,18 +84,34 @@ public class FishingSettingsScreen extends GuiScreen {
 
     @Override protected void func_146284_a(GuiButton button) {
         if(button.field_146127_k==1) { field_146297_k.func_147108_a(parent); return; }
+        if(button.field_146127_k==3) {
+            rememberFields(); page=1-page; fields=null; func_73866_w_(); return;
+        }
         if(button.field_146127_k==2) {
-            for(int i=0;i<fields.length;i++) fields[i].func_146180_a(defaults[i]);
-            protectRod=true; soundDetection=true; updateButtons(); status("gui.forgeautofish.status.defaults"); return;
+            for(int i=0;i<keys.length;i++) values.setProperty(keys[i],defaults[i]);
+            for(int i=0;i<fields.length;i++) fields[i].func_146180_a(defaults[fieldOffset()+i]);
+            protectRod=true; soundDetection=true; fixCastPitch=false; fixCastYaw=false;
+            updateButtons(); status("gui.forgeautofish.status.defaults"); return;
+        }
+        if(button.field_146127_k==15 && page==1) {
+            if(field_146297_k.field_71439_g==null) { status("gui.forgeautofish.status.noPlayer"); return; }
+            float yaw=field_146297_k.field_71439_g.field_70177_z%360;
+            if(yaw>180) yaw-=360; if(yaw< -180) yaw+=360;
+            fields[0].func_146180_a(Float.toString(field_146297_k.field_71439_g.field_70125_A));
+            fields[1].func_146180_a(Float.toString(yaw));
+            fixCastPitch=true; fixCastYaw=true; updateButtons(); status("gui.forgeautofish.status.captured"); return;
         }
         if(button.field_146127_k==10) enabled=!enabled;
         if(button.field_146127_k==11) protectRod=!protectRod;
         if(button.field_146127_k==12) soundDetection=!soundDetection;
+        if(button.field_146127_k==13) fixCastPitch=!fixCastPitch;
+        if(button.field_146127_k==14) fixCastYaw=!fixCastYaw;
         updateButtons();
         if(button.field_146127_k!=0) return;
+        rememberFields();
         Properties edited=new Properties();
-        for(int i=0;i<fields.length;i++) {
-            String raw=fields[i].func_146179_b().trim();
+        for(int i=0;i<keys.length;i++) {
+            String raw=values.getProperty(keys[i],defaults[i]).trim();
             try {
                 double value=Double.parseDouble(raw);
                 if(Double.isNaN(value) || Double.isInfinite(value) || value<min[i] || value>max[i]) throw new NumberFormatException();
@@ -90,6 +125,8 @@ public class FishingSettingsScreen extends GuiScreen {
         }
         edited.setProperty("enabled",Boolean.toString(enabled)); edited.setProperty("protectRod",Boolean.toString(protectRod));
         edited.setProperty("soundDetection",Boolean.toString(soundDetection));
+        edited.setProperty("fixCastPitch",Boolean.toString(fixCastPitch));
+        edited.setProperty("fixCastYaw",Boolean.toString(fixCastYaw));
         boolean saved=owner.applySettings(edited);
         values=owner.settingsSnapshot();
         status(saved?"gui.forgeautofish.status.saved":"gui.forgeautofish.status.saveFailed");
@@ -98,9 +135,9 @@ public class FishingSettingsScreen extends GuiScreen {
     @Override public void func_73863_a(int mouseX,int mouseY,float partialTicks) {
         func_146276_q_();
         func_73732_a(field_146289_q,tr("gui.forgeautofish.title"),field_146294_l/2,12,0xffffff);
-        func_73732_a(field_146289_q,tr("gui.forgeautofish.hint"),field_146294_l/2,26,0xaaaaaa);
+        func_73732_a(field_146289_q,tr(page==0?"gui.forgeautofish.hint":"gui.forgeautofish.angleHint"),field_146294_l/2,26,0xaaaaaa);
         for(int i=0;i<fields.length;i++) {
-            func_73731_b(field_146289_q,label(i),field_146294_l/2-145+(i%2)*150,42+(i/2)*31,0xdddddd);
+            func_73731_b(field_146289_q,label(fieldOffset()+i),field_146294_l/2-145+(i%2)*150,42+(i/2)*31,0xdddddd);
             fields[i].func_146194_f();
         }
         func_73732_a(field_146289_q,tr(statusKey,statusArgs),field_146294_l/2,field_146295_m-39,0xffcc66);
